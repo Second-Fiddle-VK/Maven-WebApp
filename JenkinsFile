@@ -1,0 +1,32 @@
+pipeline{
+	agent any
+	tools{
+		maven 'Maven'
+		jdk 'JDK'
+	}
+	stages{
+		stage('Checkout'){
+			steps{
+				git "https://github.com/Second-Fiddle/Maven-WebApp.git"
+			}
+		}
+		stage('Build'){
+			steps{
+				sh 'mvn clean install'
+			}
+		}
+		stage('Deploy'){
+			steps{
+				sh 'sudo cp target/WebApp /opt/tomcat/webapps/'
+			}
+		}
+	}
+	post{
+		success{
+			echo 'Build and Deployment successful'
+		}
+		failure{
+			echo 'Build and Deployment failed'
+		}
+	}
+}	
